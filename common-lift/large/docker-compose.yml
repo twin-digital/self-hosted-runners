@@ -1,0 +1,33 @@
+services:
+  # Isolated Docker daemon for jobs (Docker-in-Docker)
+  dind:
+    image: docker:27-dind
+    privileged: true                   # required by dind
+    command: ["--mtu=1450"]            # tweak as needed
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  gha-runner:
+    build: .
+    depends_on:
+      dind:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      RUNNER_URL: https://github.com/twin-digital/common-lift
+      GITHUB_PAT: ${GITHUB_PAT}
+      RUNNER_LABELS: self-hosted,linux,x64,large
+      RUNNER_NAME: large-ephemeral
+      RUNNER_WORKDIR: /_work
+      DOCKER_HOST: tcp://dind:2375
+      DOCKER_BUILDKIT: "1"
+    volumes:
+      - runner-work:/_work             # caches workspace/tools between container restarts
+
+volumes:
+  runner-work:
