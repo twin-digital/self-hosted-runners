@@ -18,13 +18,11 @@ else
   echo "RUNNER_URL must be https://github.com/<org>[/<repo>]" >&2; exit 1
 fi
 
-echo "Fetching short-lived registration token..."
+echo "Fetching short-lived registration token... (${token_url}, ${GITHUB_PAT})"
 RUNNER_TOKEN=$(curl -fsSL -X POST \
   -H "Authorization: Bearer ${GITHUB_PAT}" \
   -H "Accept: application/vnd.github+json" \
   "$token_url" | jq -r .token)
-
-cd /actions-runner
 
 ./config.sh \
   --url "${RUNNER_URL}" \
