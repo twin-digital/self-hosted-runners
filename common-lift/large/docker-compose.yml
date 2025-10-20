@@ -22,7 +22,6 @@ services:
       RUNNER_URL: https://github.com/twin-digital/common-lift
       GITHUB_PAT: ${GITHUB_PAT}
       RUNNER_LABELS: self-hosted,linux,x64,large
-      RUNNER_NAME: large-ephemeral
       RUNNER_WORKDIR: /_work
       DOCKER_HOST: tcp://dind:2375
       DOCKER_BUILDKIT: "1"

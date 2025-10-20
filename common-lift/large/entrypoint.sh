@@ -3,7 +3,7 @@ set -euo pipefail
 
 : "${RUNNER_URL:?e.g. https://github.com/your-org/your-repo OR https://github.com/your-org}"
 : "${GITHUB_PAT:?personal access token with 'manage_runners:org' for org, or 'repo' for repo-scope}"
-: "${RUNNER_NAME:=container-${HOSTNAME}}"
+: "${RUNNER_NAME:=large-ephemeral-${HOSTNAME}}"
 : "${RUNNER_LABELS:=self-hosted,linux,x64}"
 : "${RUNNER_WORKDIR:=/_work}"
 
