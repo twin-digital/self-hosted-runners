@@ -1,3 +1,4 @@
+
 FROM ghcr.io/actions/actions-runner:latest
 
 USER root
@@ -27,5 +28,7 @@ COPY entrypoint.sh /entrypoint.sh
 USER root
 RUN chmod +x /entrypoint.sh && chown runner:runner /entrypoint.sh
 USER runner
+
+RUN mkdir -p /home/runner/_work && mkdir -p /home/runner/_tool
 
 ENTRYPOINT ["/entrypoint.sh"]
