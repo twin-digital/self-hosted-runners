@@ -6,6 +6,9 @@ set -euo pipefail
 : "${RUNNER_NAME:=large-ephemeral-${HOSTNAME}}"
 : "${RUNNER_LABELS:=self-hosted,linux,x64}"
 : "${RUNNER_WORKDIR:=/_work}"
+: "${RUNNER_NAME_PREFIX:=runner}"
+UNIQ="$(hostname)-$(date +%s)-$RANDOM"
+RUNNER_NAME="${RUNNER_NAME_PREFIX}-${UNIQ}"
 
 api_base="https://api.github.com"
 if [[ "$RUNNER_URL" =~ https://github.com/([^/]+)/([^/]+)$ ]]; then

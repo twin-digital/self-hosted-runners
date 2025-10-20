@@ -19,9 +19,10 @@ services:
         condition: service_healthy
     restart: unless-stopped
     environment:
-      RUNNER_URL: https://github.com/twin-digital/common-lift
       GITHUB_PAT: ${GITHUB_PAT}
       RUNNER_LABELS: self-hosted,linux,x64,large
+      RUNNER_NAME_PREFIX: large
+      RUNNER_URL: https://github.com/twin-digital/common-lift
       RUNNER_WORKDIR: /_work
       DOCKER_HOST: tcp://dind:2375
       DOCKER_BUILDKIT: "1"
