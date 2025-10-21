@@ -19,6 +19,7 @@ services:
 
   gha-runner:
     build: .
+    cpus: 8
     depends_on:
       dind:
         condition: service_healthy
