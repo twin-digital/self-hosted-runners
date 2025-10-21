@@ -32,27 +32,10 @@ services:
       RUNNER_WORKDIR: /home/runner/_work
       DOCKER_HOST: tcp://dind:2375
       DOCKER_BUILDKIT: "1"
+    network_mode: "service:dind"
     volumes:
       - runner-tools:/home/runner/_tools # caches workspace/tools between container restarts
       - runner-work:/home/runner/_work
-
-  # Redirect *all* runner-local TCP (127.0.0.1:*) to dind:<same-port>; this allows jobs to access ports
-  # exposed by Docker containers without knowing anything about the Docker (dind) sidecar
-  # Runs in the runner's net namespace so it can rewrite OUTPUT traffic.
-  loopback-redirect:
-    image: alpine:3.22
-    cap_add:
-      - NET_ADMIN
-    depends_on:
-      dind:
-        condition: service_started
-      gha-runner:
-        condition: service_started
-    # share runner netns
-    network_mode: "service:gha-runner"
-    volumes:
-      - ./redirect.sh:/usr/local/bin/redirect.sh:ro
-    entrypoint: ["/bin/sh", "/usr/local/bin/redirect.sh"]
 
 volumes:
   runner-tools:
